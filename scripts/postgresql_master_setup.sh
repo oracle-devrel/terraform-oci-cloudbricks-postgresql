@@ -12,9 +12,9 @@ sudo systemctl status postgresql
 echo "postgres:${pg_password}" | chpasswd
 
 # Setting firewall rules
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-source=${pg_hotstandby_ip}/32"
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-port=5432/tcp"
-sudo -u root bash -c "firewall-cmd --reload"
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+sudo systemctl mask --now firewalld
 
 # Update the content of postgresql.conf to support WAL
 sudo -u root bash -c "echo 'wal_level = replica' | sudo tee -a $DATA_DIR/postgresql.conf"

@@ -23,9 +23,9 @@ EOF
 sudo -u root bash -c "echo postgres:${pg_replicat_password} | chpasswd"
 
 # Setting firewall rules
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-source=${pg_master_ip}/32"
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-port=5432/tcp"
-sudo -u root bash -c "firewall-cmd --reload"
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+sudo systemctl mask --now firewalld
 
 # Take initial backup of database
 sudo -u root bash -c "rm -rf $DATA_DIR/*"

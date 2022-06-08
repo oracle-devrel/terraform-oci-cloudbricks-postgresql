@@ -7,9 +7,9 @@ export pg_version='${pg_version}'
 export DATA_DIR="/u01/data"
 
 # Setting firewall rules
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-source=${pg_hotstandby_ip}/32"
-sudo -u root bash -c "firewall-cmd --permanent --zone=trusted --add-port=5432/tcp"
-sudo -u root bash -c "firewall-cmd --reload"
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+sudo systemctl mask --now firewalld
 
 # Update the content of pg_hba to include standby host for replication
 sudo -u root bash -c "echo 'host replication ${pg_replicat_username} ${pg_hotstandby_ip}/32 md5' | sudo tee -a $DATA_DIR/pg_hba.conf" 
